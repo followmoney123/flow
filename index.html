@@ -13,7 +13,7 @@
 
 
 <link rel="preconnect" href="https://rsms.me/">
-<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="./assets/css/style.css">
 <!-- Copyright 1998-2024 by Northwoods Software Corporation. -->
 
 
@@ -82,7 +82,7 @@
         <div class="w-full max-w-screen-xl mx-auto">
           <!-- * * * * * * * * * * * * * -->
           <!-- Start of GoJS sample code -->
-          <script src="../release/go.js"></script>
+          <script src="./release/go.js"></script>
 
           
 
@@ -104,7 +104,7 @@
                 opacity: 0;
               }
             </style>
-            <script src="../extensions/DataInspector.js"></script>
+            <script src="./extensions/DataInspector.js"></script>
 
             <script id="code">
               function init() {
@@ -219,8 +219,8 @@
 
                 // This converter is used by the Picture.
                 function findHeadShot(pic) {
-                  if (!pic) return '../samples/images/user.svg'; // There are only 16 images on the server
-                  return '../samples/images/' + pic;
+                  if (!pic) return './samples/images/user.svg'; // There are only 16 images on the server
+                  return './samples/images/' + pic;
                 }
 
                 // Used to convert the node's tree level into a theme color
@@ -370,7 +370,7 @@
                                     new go.Shape('Circle', { desiredSize: new go.Size(50, 50), strokeWidth: 0 }),
                                     new go.Picture({
                                       name: 'PICTURE',
-                                      source: '../samples/images/user.svg',
+                                      source: './samples/images/user.svg',
                                       desiredSize: new go.Size(30, 30)
                                     }).bind('source', 'pic', findHeadShot)
                                   )
@@ -680,5 +680,5 @@
       </div>
   </body>
   <!--  This script is part of the gojs.net website, and is not needed to run the sample -->
-  <script src="../assets/js/goSamples.js"></script>
+  <script src="./assets/js/goSamples.js"></script>
 </html>
