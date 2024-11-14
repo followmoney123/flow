@@ -335,7 +335,9 @@
                       desiredSize: new go.Size(200, 100),  // Set your custom width and height here
                       spot1: go.Spot.TopLeft,
                       spot2: go.Spot.BottomRight
-                    }).theme('fill', 'background'),
+                    }).bind('figure', 'isCircle', function(isCircle) {
+      return isCircle ? 'Circle' : 'Rectangle';  // Switch between circle and rectangle based on the 'isCircle' property
+    }).theme('fill', 'background'),
                     new go.Panel(go.Panel.Table, { margin: 0.5, defaultRowSeparatorStrokeWidth: 0.5 })
                       .theme('defaultRowSeparatorStroke', 'divider')
                       .add(
@@ -710,20 +712,20 @@
             <textarea id="mySavedModel" style="width: 100%; height: 270px; display: none;">
             { "class": "go.TreeModel",
               "nodeDataArray": [
-              {"key":1, "name":"ETH", "title":"", "dept": "Chain", "pic":"ethereum-eth-logo.png", "email": "sdiaz@example.com", "phone": "(234) 555-6789" },
+              {"key":1, "name":"ETH", "title":"", "dept": "Chain", "pic":"ethereum-eth-logo.png", "email": "sdiaz@example.com", "phone": "(234) 555-6789"},
               {"key":2, "name":"Coinbase", "title":"", "dept": "Platform", "pic":"coinbase.png", "email": "lwarm@example.com", "phone": "(234) 555-6789", "parent":1},
               {"key":3, "name":"Mantle Staked ETH", "title":"", "dept": "Chain", "pic":"mantle-mnt-logo.png", "email": "mhoffa@example.com", "phone": "(234) 555-6789", "parent":1},
               {"key":4, "name":"Binance staked ETH", "title":"", "dept": "Platform", "pic":"binance.png", "email": "pflaming@example.com", "phone": "(234) 555-6789", "parent":1},
               {"key":5, "name":"Rocket Pool", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "swellingood@example.com", "phone": "(234) 555-6789", "parent":1},
               {"key":6, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "aligori@example.com", "phone": "(234) 555-6789", "parent":1},
               
-              {"key":7, "name":"cbETH", "title":"", "dept": "Chain", "pic":"cbETH.png", "email": "dstubadd@example.com", "phone": "(234) 555-6789", "parent":2},
-              {"key":8, "name":"mETH", "title":"", "dept": "Chain", "pic":"meth.png", "email": "lismore@example.com", "phone": "(234) 555-6789", "parent":3},
-              {"key":9, "name":"WBETH", "title":"", "dept": "Chain", "pic":"wbeth.png", "email": "aparris@example.com", "phone": "(234) 555-6789", "parent":4},
-              {"key":10, "name":"rETH", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "xbreath@example.com", "phone": "(234) 555-6789", "parent":5},
-              {"key":11, "name":"stETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "ahammer@example.com", "phone": "(234) 555-6789", "parent":6},
-              {"key":12, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "baiken@example.com", "phone": "(234) 555-6789", "parent":11},
-              {"key":13, "name":"Ether.fi", "title":"", "dept": "Chain", "pic":"etherfi.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":11},
+              {"key":7, "name":"cbETH", "title":"", "dept": "Chain", "pic":"cbETH.png", "email": "dstubadd@example.com", "phone": "(234) 555-6789", "parent":2 , "isCircle": true},
+              {"key":8, "name":"mETH", "title":"", "dept": "Chain", "pic":"meth.png", "email": "lismore@example.com", "phone": "(234) 555-6789", "parent":3 , "isCircle": true},
+              {"key":9, "name":"WBETH", "title":"", "dept": "Chain", "pic":"wbeth.png", "email": "aparris@example.com", "phone": "(234) 555-6789", "parent":4 , "isCircle": true},
+              {"key":10, "name":"rETH", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "xbreath@example.com", "phone": "(234) 555-6789", "parent":5, "isCircle": true},
+              {"key":11, "name":"stETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "ahammer@example.com", "phone": "(234) 555-6789", "parent":6 },
+              {"key":12, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "baiken@example.com", "phone": "(234) 555-6789", "parent":11 },
+              {"key":13, "name":"Ether.fi", "title":"", "dept": "Chain", "pic":"etherfi.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":11 },
               {"key":14, "name":"weETH", "title":"", "dept": "Chain", "pic":"weeth.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":13},
 
               {"key":15, "name":"wstETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":12},
