@@ -38,7 +38,7 @@
   </title>
 </head>
 
-<body style="background-color:#1d1d1f; border: none;">
+<body style="background-color:#1d1d1f; border: none; margin: 0; overflow: hidden;">
   <script>
     window.addEventListener("DOMContentLoaded", function () {
       // topnav
@@ -116,7 +116,7 @@
               validCycle: go.CycleMode.DestinationTree, // make sure users can only create trees
               hasHorizontalScrollbar: false,
               hasVerticalScrollbar: false,
-              initialScale:0.6,
+              initialScale:0.7,
               
               // 'clickCreatingTool.archetypeNodeData': {
               //   // allow double-click in background to create a new node
@@ -281,6 +281,11 @@
               // show/hide buttons when mouse enters/leaves
               mouseEnter: (e, node) =>
                 (node.findObject('BUTTON').opacity = node.findObject('BUTTONX').opacity = 1),
+                mouseHover: (e, obj) => {
+        var node = obj.part;
+        nodeHoverAdornment.adornedObject = node;
+        node.addAdornment('mouseHover', nodeHoverAdornment);
+      },
               mouseLeave: (e, node) => {
                 if (node.isSelected) return; // if selected dont hide buttons
                 node.findObject('BUTTON').opacity = node.findObject('BUTTONX').opacity = 0;
@@ -549,7 +554,11 @@
               routing: go.Routing.Orthogonal,
               layerName: 'Background',
               corner: 5
-            }).add(new go.Shape({ strokeWidth: 2 }).theme('stroke', 'link')); // the link shape
+            }).add(new go.Shape({ strokeWidth: 2 }).theme('stroke', 'link'),
+            // new go.TextBlock("from", { segmentIndex: 1, segmentFraction: 0.5,stroke: "red" }),
+      new go.TextBlock("mid", { segmentIndex: 2, segmentFraction: 0.5,stroke: "red"}),
+      // new go.TextBlock("to", { segmentIndex: 3, segmentFraction: 0.5,stroke: "red" })
+          ); // the link shape
 
             // read in the JSON-format data from the "mySavedModel" element
             load();
@@ -577,6 +586,32 @@
 
 
           } // end init
+
+
+              // this is shown by the mouseHover event handler
+    var nodeHoverAdornment = new go.Adornment('Spot', {
+      //background: "transparent",
+      // hide the Adornment when the mouse leaves it
+      mouseLeave: (e, obj) => {
+        var ad = obj.part;
+        ad.adornedPart.removeAdornment('mouseHover');
+      }
+    })
+      .add(
+        new go.Placeholder({
+          //background: "transparent",  // to allow this Placeholder to be "seen" by mouse events
+          isActionable: true, // needed because this is in a temporary Layer
+          click: (e, obj) => {
+            var node = obj.part.adornedPart;
+            node.diagram.select(node);
+          }
+        }),
+        // go.GraphObject.build('Button', { alignment: go.Spot.Left, alignmentFocus: go.Spot.Right, click: (e, obj) => alert('Hi!') })
+        //   .add(new go.TextBlock('Hi!')),
+        go.GraphObject.build('Button', { alignment: go.Spot.Right, alignmentFocus: go.Spot.Left, click: (e, obj) => alert('Bye') })
+          .add(new go.TextBlock('TVL:10000,1D Change:30%'))
+      );
+
 
           // Show the diagram's model in JSON format
           function save() {
@@ -618,23 +653,52 @@
         </script>
 
         <div id="sample">
-          <p style="display: none;"> 
-            <select id="theme" onchange="changeTheme()" style="display: none;">
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark" selected>Dark</option>
-            </select>
-            <button id="zoomToFit"  style="display: none;">Zoom to Fit</button> <button id="centerRoot"  style="display: none;">Center on root</button>
-          </p>
+            <p style="display: none;"> 
+              <select id="theme" onchange="changeTheme()" style="display: none;">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark" selected>Dark</option>
+              </select>
+              <button id="zoomToFit"  style="display: none;">Zoom to Fit</button> <button id="centerRoot"  style="display: none;">Center on root</button>
+            </p>
+            <div style="display: flex; height: 100vh; width: 100vw; background-color: #1e1e1e;">
+              <!-- Left Side Container -->
+              <div style="width: 250px; display: flex; flex-direction: column; height: 100%;">
+      
+                  <!-- Top Div (extraDiv) -->
+                  <div id="extraDiv" style="flex: 1; background-color: #202328; color: white; padding: 10px; border-bottom: 1px solid #15171a; box-sizing: border-box;">
+                      Extra Div
+                      <div>
+                          <input type="radio" id="huey" name="drone" value="huey" checked />
+                          <label for="huey">Huey</label>
+                      </div>
+                      <div>
+                          <input type="radio" id="dewey" name="drone" value="dewey" />
+                          <label for="dewey">Dewey</label>
+                      </div>
+                      <div>
+                          <input type="radio" id="louie" name="drone" value="louie" />
+                          <label for="louie">Louie</label>
+                      </div>
+                  </div>
+      
+                  <!-- Bottom Div (myInspector) -->
+                  <div id="myInspector" style="flex: 1; background-color: #15171a; color: white; padding: 10px; box-sizing: border-box;">
+                      Inspector
+                  </div>
+              </div>
+      
+              <!-- Right Side (myDiagramDiv) -->
+              <div id="myDiagramDiv" style="flex-grow: 1; background-color: #15171a; color: white; padding: 10px; box-sizing: border-box;">
+                  Diagram Area
+              </div>
+          </div>
+          <!-- <div class="container">
+         
 
-          <div class="container">
-            <div class="row">
-            
               <div id="myInspector" style="display: inline-block; color:white; height: 550px; width:250px;"></div>
               <div id="myDiagramDiv" style="display: inline-block; background-color: #15171a; border: solid 1px #15171a; height: 550px; width: 1050px"></div>
-              <!-- <div id="myDiagramDiv" style="background-color: #15171a; border: solid 1px 15171a; height: 625px"></div> -->
-            </div>
-          </div>
+          </div> -->
         </div>
           
         <div  style="display: none;">
