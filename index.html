@@ -553,15 +553,34 @@
               );
 
             // define the Link template
-            myDiagram.linkTemplate = new go.Link({
-              routing: go.Routing.Orthogonal,
-              layerName: 'Background',
-              corner: 5
-            }).add(new go.Shape({ strokeWidth: 2 }).theme('stroke', 'link'),
-            // new go.TextBlock("from", { segmentIndex: 1, segmentFraction: 0.5,stroke: "red" }),
-      new go.TextBlock("mid", { segmentIndex: 2, segmentFraction: 0.5,stroke: "red"}),
-      // new go.TextBlock("to", { segmentIndex: 3, segmentFraction: 0.5,stroke: "red" })
-          ); // the link shape
+      //       myDiagram.linkTemplate = new go.Link({
+      //         routing: go.Routing.Orthogonal,
+      //         layerName: 'Background',
+      //         corner: 5
+      //       }).add(new go.Shape({ strokeWidth: 2 }).theme('stroke', 'link'),
+      //       new go.TextBlock("from", { segmentIndex: 1, segmentFraction: 0.5,stroke: "red" }),
+      // // new go.TextBlock("mid", { segmentIndex: 2, segmentFraction: 0.5,stroke: "red"}),
+      // // new go.TextBlock("to", { segmentIndex: 3, segmentFraction: 0.5,stroke: "red" })
+      //     ); // the link shape
+
+    myDiagram.linkTemplate = new go.Link({
+      curve: go.Curve.Bezier,
+      fromShortLength: -2,
+      toShortLength: -6,
+      selectable: false
+    })
+      .add(
+        new go.Shape({ strokeWidth: 3 }).bindObject('stroke', 'toNode', (n) => {if (n.data.brush) return n.data.brush; return 'black';
+          }),
+        new go.TextBlock({
+            stroke: 'green',
+            background: 'rgba(255,255,255,0.75)',
+            maxSize: new go.Size(80, NaN),
+            editable: false
+          }).bindTwoWay('text')
+      );
+
+
 
             // read in the JSON-format data from the "mySavedModel" element
             load();
@@ -581,9 +600,83 @@
               .getElementById('zoomToFit')
               .addEventListener('click', () => myDiagram.commandHandler.zoomToFit());
 
+
+            let data1={ "class": "go.TreeModel",
+              "nodeDataArray": [
+              {"key":1, "name":"ETH", "title":"", "dept": "Chain", "pic":"ethereum-eth-logo.png", "email": "sdiaz@example.com", "phone": "(234) 555-6789"},
+              {"key":2, "name":"Coinbase", "title":"", "dept": "Platform", "pic":"coinbase.png", "email": "lwarm@example.com", "phone": "(234) 555-6789", "parent":1, "brush":"coral", "text":"50% support"},
+              {"key":3, "name":"Mantle Staked ETH", "title":"", "dept": "Chain", "pic":"mantle-mnt-logo.png", "email": "mhoffa@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":4, "name":"Binance staked ETH", "title":"", "dept": "Platform", "pic":"binance.png", "email": "pflaming@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":5, "name":"Rocket Pool", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "swellingood@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":6, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "aligori@example.com", "phone": "(234) 555-6789", "parent":1},
+              
+              {"key":7, "name":"cbETH", "title":"", "dept": "Chain", "pic":"cbETH.png", "email": "dstubadd@example.com", "phone": "(234) 555-6789", "parent":2 , "isCircle": true},
+              {"key":8, "name":"mETH", "title":"", "dept": "Chain", "pic":"meth.png", "email": "lismore@example.com", "phone": "(234) 555-6789", "parent":3 , "isCircle": true},
+              {"key":9, "name":"WBETH", "title":"", "dept": "Chain", "pic":"wbeth.png", "email": "aparris@example.com", "phone": "(234) 555-6789", "parent":4 , "isCircle": true},
+              {"key":10, "name":"rETH", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "xbreath@example.com", "phone": "(234) 555-6789", "parent":5, "isCircle": true},
+              {"key":11, "name":"stETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "ahammer@example.com", "phone": "(234) 555-6789", "parent":6 },
+              {"key":12, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "baiken@example.com", "phone": "(234) 555-6789", "parent":11 },
+              {"key":13, "name":"Ether.fi", "title":"", "dept": "Chain", "pic":"etherfi.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":11 },
+              {"key":14, "name":"weETH", "title":"", "dept": "Chain", "pic":"weeth.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":13},
+
+              {"key":15, "name":"wstETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":12},
+
+              {"key":16, "name":"Sommelier", "title":"", "dept": "Chain", "pic":"sommelier.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":15},
+              {"key":17, "name":"MorphoAAVE v3", "title":"", "dept": "Chain", "pic":"aave.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":15},
+              {"key":18, "name":"Sommelier", "title":"", "dept": "Chain", "pic":"sommelier.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":15},
+
+              {"key":19, "name":"YieldETH", "title":"", "dept": "Chain", "pic":"13.jpg", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":16},
+              {"key":20, "name":"aEthwstETH", "title":"", "dept": "Chain", "pic":"13.jpg", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":17},
+              {"key":21, "name":"TurboSTETH", "title":"", "dept": "Chain", "pic":"13.jpg", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":18}
+
+
+              ]
+            
+            }
+            let data2={ "class": "go.TreeModel",
+              "nodeDataArray": [
+              {"key":1, "name":"ETH", "title":"", "dept": "Chain", "pic":"ethereum-eth-logo.png", "email": "sdiaz@example.com", "phone": "(234) 555-6789"},
+              {"key":2, "name":"Coinbase", "title":"", "dept": "Platform", "pic":"coinbase.png", "email": "lwarm@example.com", "phone": "(234) 555-6789", "parent":1, "brush":"white", "text":"100%%%%%%"},
+              {"key":3, "name":"Mantle Staked ETH", "title":"", "dept": "Chain", "pic":"mantle-mnt-logo.png", "email": "mhoffa@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":4, "name":"Binance staked ETH", "title":"", "dept": "Platform", "pic":"binance.png", "email": "pflaming@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":5, "name":"Rocket Pool", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "swellingood@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":6, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "aligori@example.com", "phone": "(234) 555-6789", "parent":1},
+              
+              {"key":7, "name":"cbETH", "title":"", "dept": "Chain", "pic":"cbETH.png", "email": "dstubadd@example.com", "phone": "(234) 555-6789", "parent":2 , "isCircle": true},
+              {"key":8, "name":"mETH", "title":"", "dept": "Chain", "pic":"meth.png", "email": "lismore@example.com", "phone": "(234) 555-6789", "parent":3 , "isCircle": true},
+              {"key":9, "name":"WBETH", "title":"", "dept": "Chain", "pic":"wbeth.png", "email": "aparris@example.com", "phone": "(234) 555-6789", "parent":4 , "isCircle": true},
+              {"key":10, "name":"rETH", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "xbreath@example.com", "phone": "(234) 555-6789", "parent":5, "isCircle": true},
+              {"key":11, "name":"stETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "ahammer@example.com", "phone": "(234) 555-6789", "parent":6 },
+              {"key":12, "name":"LIDO", "title":"", "dept": "Chain", "pic":"lido-dao-ldo-logo.png", "email": "baiken@example.com", "phone": "(234) 555-6789", "parent":11 },
+              {"key":13, "name":"Ether.fi", "title":"", "dept": "Chain", "pic":"etherfi.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":11 },
+              {"key":14, "name":"weETH", "title":"", "dept": "Chain", "pic":"weeth.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":13},
+
+              {"key":15, "name":"wstETH", "title":"", "dept": "Chain", "pic":"steth.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":12},
+
+              {"key":16, "name":"Sommelier", "title":"", "dept": "Chain", "pic":"sommelier.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":15},
+              {"key":17, "name":"MorphoAAVE v3", "title":"", "dept": "Chain", "pic":"aave.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":15},
+              {"key":18, "name":"Sommelier", "title":"", "dept": "Chain", "pic":"sommelier.png", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":15},
+
+              {"key":19, "name":"YieldETH", "title":"", "dept": "Chain", "pic":"13.jpg", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":16},
+              {"key":20, "name":"aEthwstETH", "title":"", "dept": "Chain", "pic":"13.jpg", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":17},
+              {"key":21, "name":"TurboSTETH", "title":"", "dept": "Chain", "pic":"13.jpg", "email": "swellback@example.com", "phone": "(234) 555-6789", "parent":18}
+
+
+              ]
+            
+            }
+
+            document.getElementById('huey').addEventListener('click', () => {
+              load_index(data1)
+            });
+            document.getElementById('dewey').addEventListener('click', () => {
+              load_index(data2)
+            });          document.getElementById('louie').addEventListener('click', () => {
+              load_index(data1)
+            });
+
             document.getElementById('centerRoot').addEventListener('click', () => {
-              myDiagram.scale = 1;
-              myDiagram.commandHandler.scrollToPart(myDiagram.findNodeForKey(1));
+              load_index(data2)
             });
 
 
@@ -632,6 +725,17 @@
               return k;
             };
           }
+          function load_index(index_data) {
+            myDiagram.model = go.Model.fromJson(index_data);
+            // make sure new data keys are unique positive integers
+            let lastkey = 1;
+            myDiagram.model.makeUniqueKeyFunction = (model, data) => {
+              let k = data.key || lastkey;
+              while (model.findNodeDataForKey(k)) k++;
+              data.key = lastkey = k;
+              return k;
+            };
+          }
 
           function changeTheme() {
             const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
@@ -656,31 +760,30 @@
         </script>
 
         <div id="sample">
-            <p style="display: none;"> 
-              <select id="theme" onchange="changeTheme()" style="display: none;">
-                <option value="system">System</option>
-                <option value="light">Light</option>
-                <option value="dark" selected>Dark</option>
-              </select>
-              <button id="zoomToFit"  style="display: none;">Zoom to Fit</button> <button id="centerRoot"  style="display: none;">Center on root</button>
-            </p>
             <div style="display: flex; height: 100vh; width: 100vw; background-color: #1e1e1e;">
               <!-- Left Side Container -->
               <div style="width: 250px; display: flex; flex-direction: column; height: 100%;">
-      
+                <p style="display: none;"> 
+                  <select id="theme" onchange="changeTheme()">
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark" selected>Dark</option>
+                  </select>
+                  <button id="zoomToFit" style="display: none;">Zoom to Fit</button> <button id="centerRoot"  style="display: none;">Center on root</button>
+                </p>
                   <!-- Top Div (extraDiv) -->
                   <div id="extraDiv" style="flex: 1; background-color: #202328; color: white; padding: 10px; border-bottom: 1px solid #15171a; box-sizing: border-box;">
                       Extra Div
                       <div>
-                          <input type="radio" id="huey" name="drone" value="huey" checked />
+                          <input type="radio" id="huey" name="drone" value="huey"  checked />
                           <label for="huey">Huey</label>
                       </div>
                       <div>
                           <input type="radio" id="dewey" name="drone" value="dewey" />
-                          <label for="dewey">Dewey</label>
+                          <label for="dewey">Dewey</label> 
                       </div>
                       <div>
-                          <input type="radio" id="louie" name="drone" value="louie" />
+                          <input type="radio" id="louie" name="drone" value="louie" o/>
                           <label for="louie">Louie</label>
                       </div>
                   </div>
@@ -713,7 +816,7 @@
             { "class": "go.TreeModel",
               "nodeDataArray": [
               {"key":1, "name":"ETH", "title":"", "dept": "Chain", "pic":"ethereum-eth-logo.png", "email": "sdiaz@example.com", "phone": "(234) 555-6789"},
-              {"key":2, "name":"Coinbase", "title":"", "dept": "Platform", "pic":"coinbase.png", "email": "lwarm@example.com", "phone": "(234) 555-6789", "parent":1},
+              {"key":2, "name":"Coinbase", "title":"", "dept": "Platform", "pic":"coinbase.png", "email": "lwarm@example.com", "phone": "(234) 555-6789", "parent":1, "brush":"coral", "text":"50% support"},
               {"key":3, "name":"Mantle Staked ETH", "title":"", "dept": "Chain", "pic":"mantle-mnt-logo.png", "email": "mhoffa@example.com", "phone": "(234) 555-6789", "parent":1},
               {"key":4, "name":"Binance staked ETH", "title":"", "dept": "Platform", "pic":"binance.png", "email": "pflaming@example.com", "phone": "(234) 555-6789", "parent":1},
               {"key":5, "name":"Rocket Pool", "title":"", "dept": "Chain", "pic":"rocketpool.png", "email": "swellingood@example.com", "phone": "(234) 555-6789", "parent":1},
